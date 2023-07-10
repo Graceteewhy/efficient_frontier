@@ -51,17 +51,23 @@ st.write("""
 Portfolio selecttion
 """)
 
-tickers_string = st.sidebar.text_input('Enter all stock tickers to be included in portfolio separated by commas \
+tickers = st.sidebar.text_input('Enter all stock tickers to be included in portfolio separated by commas \
  WITHOUT spaces, e.g. "MA,FB,V,AMZN,JPM,BA"', '').upper()
-tickers = tickers_string.split(',')
+tickers = tickers.split(',')
 
 
+    
 
-data = yf.download(tickers, period='3y', interval='1d')['Close']
-data = data.dropna(axis=1,how='all')
-#data = load_data(tickers)    
+START = "2015-01-01"
+TODAY = date.today().strftime("%Y-%m-%d")
+
+data = yf.download(tickers, START, TODAY)['Close']
+data=data.dropna(axis=1,how='all')
+
+
 st.subheader('Stock raw data')
 st.write(data.tail())
+
 
 
 # calculating expected annual return and annualized sample covariance matrix of daily assets returns
